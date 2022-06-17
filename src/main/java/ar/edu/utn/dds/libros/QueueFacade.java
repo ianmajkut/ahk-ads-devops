@@ -12,10 +12,13 @@ import java.security.NoSuchAlgorithmException;
 
 public class QueueFacade {
 
+    public static final String CHANNEL_SOLICITAR = "solicitarValidacion";
+    public static final String CHANNEL_CONFIRMAR = "confirmarValidacion";
+
     private ConnectionFactory factory ;
     private Connection connection ;
     private Channel channel ;
-    private String queue = "hello";     //queue name
+
 
     public void init(String uri) throws Exception {
         factory = new ConnectionFactory();
@@ -29,7 +32,7 @@ public class QueueFacade {
 
     }
 
-    public void createChanel() throws IOException {
+    public void createChanel(String queue) throws IOException {
         channel = connection.createChannel();
 
         boolean durable = false;    //durable - RabbitMQ will never lose the queue if a crash occurs
@@ -42,12 +45,12 @@ public class QueueFacade {
 
 
 
-    public void sendMessage(String msg) throws IOException {
+    public void sendMessage(String queue,String msg) throws IOException {
         String exchangeName = "";
         channel.basicPublish(exchangeName, queue, null, msg.getBytes());
 
     }
-    public void addCallback(DeliverCallback deliverCallback) throws IOException {
+    public void addCallback(String queue, DeliverCallback deliverCallback) throws IOException {
         channel.basicConsume(queue, true, deliverCallback, consumerTag -> { });
     }
 

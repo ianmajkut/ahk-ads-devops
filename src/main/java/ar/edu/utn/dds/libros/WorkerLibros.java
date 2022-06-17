@@ -7,25 +7,26 @@ public class WorkerLibros {
     public static void main(String[] args) throws Exception {
         QueueFacade queue = new QueueFacade();
         queue.init(System.getenv("QUEUE_URL"));
-        queue.createChanel();
-        queue.sendMessage("eapepe");
+        queue.createChanel(QueueFacade.CHANNEL_SOLICITAR);
+        queue.createChanel(QueueFacade.CHANNEL_CONFIRMAR);
 
         DeliverCallback deliverCallback1 = (consumerTag, delivery) -> {
             String message = new String(delivery.getBody(), "UTF-8");
             System.out.println(" [x] Received222 '" + message + "'");
             if(message.startsWith("validarLibro|")){
                 String[] split = message.split("\\|");
-                queue.sendMessage( "libroValidado|" + split[1]);
                 try {
                     // Simulamos demora en el proceso
-                    Thread.sleep(1000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                queue.sendMessage( QueueFacade.CHANNEL_CONFIRMAR ,"libroValidado|" + split[1]);
+
             }
 
         };
-        queue.addCallback(deliverCallback1);
+        queue.addCallback(QueueFacade.CHANNEL_SOLICITAR,deliverCallback1);
 
     }
 

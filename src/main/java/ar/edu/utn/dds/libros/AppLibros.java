@@ -41,7 +41,7 @@ public class AppLibros {
             }
 
         };
-        queue.addCallback(deliverCallback1);
+        queue.addCallback(QueueFacade.CHANNEL_CONFIRMAR,deliverCallback1);
 
     }
     public void start(){
@@ -60,7 +60,8 @@ public class AppLibros {
         AppLibros app = new AppLibros();
         QueueFacade queue = new QueueFacade();
         queue.init(System.getenv("QUEUE_URL"));
-        queue.createChanel();
+        queue.createChanel(QueueFacade.CHANNEL_SOLICITAR);
+        queue.createChanel(QueueFacade.CHANNEL_CONFIRMAR);
 
         app.init(queue);
 

@@ -43,7 +43,7 @@ public class LibrosController {
         //validate
         Libro libro = ctx.bodyAsClass(Libro.class);
         repo.save(libro);
-        queue.sendMessage( "validarLibro|" + libro.getId().toString());
+        queue.sendMessage( QueueFacade.CHANNEL_SOLICITAR ,"validarLibro|" + libro.getId().toString());
 
         ctx.status(201);
     }
