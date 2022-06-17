@@ -1,9 +1,6 @@
 package ar.edu.utn.dds.libros;
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.DeliverCallback;
+import com.rabbitmq.client.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -47,11 +44,14 @@ public class QueueFacade {
 
     public void sendMessage(String queue,String msg) throws IOException {
         String exchangeName = "";
-        channel.basicPublish(exchangeName, queue, null, msg.getBytes());
+        channel.basicPublish(exchangeName, queue, MessageProperties.PERSISTENT_BASIC, msg.getBytes());
 
     }
     public void addCallback(String queue, DeliverCallback deliverCallback) throws IOException {
         channel.basicConsume(queue, true, deliverCallback, consumerTag -> { });
     }
 
+    public void close() throws IOException {
+        connection.close();
+    }
 }

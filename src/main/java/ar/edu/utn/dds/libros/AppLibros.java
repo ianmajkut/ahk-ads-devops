@@ -3,6 +3,8 @@ package ar.edu.utn.dds.libros;
 import com.rabbitmq.client.DeliverCallback;
 import io.javalin.Javalin;
 
+import java.io.IOException;
+
 public class AppLibros {
 
     private Javalin app;
@@ -68,7 +70,15 @@ public class AppLibros {
 
 
         app.start();
-
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                try {
+                    queue.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 }

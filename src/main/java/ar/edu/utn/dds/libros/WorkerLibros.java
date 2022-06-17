@@ -2,6 +2,8 @@ package ar.edu.utn.dds.libros;
 
 import com.rabbitmq.client.DeliverCallback;
 
+import java.io.IOException;
+
 public class WorkerLibros {
 
     public static void main(String[] args) throws Exception {
@@ -27,7 +29,15 @@ public class WorkerLibros {
 
         };
         queue.addCallback(QueueFacade.CHANNEL_SOLICITAR,deliverCallback1);
-
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                try {
+                    queue.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 }
