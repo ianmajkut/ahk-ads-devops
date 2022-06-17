@@ -13,9 +13,9 @@ public class AppLibrosTest {
     static Javalin app;
 
     @BeforeAll
-    public static void init() {
+    public static void init() throws Exception {
         AppLibros appLibros = new AppLibros();
-        appLibros.init();
+//        appLibros.init();
         app = appLibros.javalinApp();
     }
 

@@ -6,6 +6,9 @@ public class Libro {
     private String nombre;
     private String autor;
     private Long precio;
+    private boolean valid;
+
+
 
     public Long getId() {
         return id;
@@ -37,5 +40,13 @@ public class Libro {
 
     public void setPrecio(Long precio) {
         this.precio = precio;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 }
