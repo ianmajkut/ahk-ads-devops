@@ -1,6 +1,7 @@
 package ar.edu.utn.dds.libros;
 
 import io.javalin.Javalin;
+import io.javalin.http.Context;
 
 public class AppLibros {
 
@@ -15,6 +16,9 @@ public class AppLibros {
         this.app = Javalin.create();
         repo = new RepoLibros();
         controller = new LibrosController(repo);
+
+        app.get(  "/home",  (Context ctx) -> ctx.result("hola!"));
+
         app.get(  "/libros",  controller::list);
 
         app.get("/libros/{id}", controller::get);
