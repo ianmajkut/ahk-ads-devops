@@ -15,6 +15,14 @@ public class AppLibros {
     public void init(){
         this.app = Javalin.create();
         repo = new RepoLibros();
+
+        Libro libro = new Libro();
+        libro.setId(1L);
+        libro.setPrecio(14L);
+        libro.setAutor("un autor");
+        libro.setNombre("un libro");
+        repo.save(libro);
+
         controller = new LibrosController(repo);
 
         app.get(  "/home",  (Context ctx) -> ctx.result("hola!"));
